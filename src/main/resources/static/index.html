@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cosmic 3D Web Profile</title>
+  <title>Molebogeng Lehlogonolo Selahle</title>
   
   <!-- Preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@400;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -20,15 +20,76 @@
   <!-- Deep Space Atmosphere Vignette -->
   <div class="space-vignette"></div>
 
-  <!-- Central Planet Stage (Exact Cartesian 0,0 Center) -->
-  <div class="planet-stage" id="planet-stage" title="Click and drag to rotate the planet">
-    <div class="atmosphere-halo"></div>
-    <div class="orbit-reticle"></div>
-    <canvas id="planet-canvas"></canvas>
+  <!-- Futuristic Animated Cosmic Title -->
+  <header class="cosmic-title-container" id="cosmic-title-container" aria-label="Welcome To My World">
+    <div class="title-backdrop-glow"></div>
+    <div class="title-hud-decor top-bar">
+      <span class="decor-corner top-left"></span>
+      <span class="hud-status-indicator"></span>
+      <span class="hud-sub-label">Molebogeng &bull; Lehlogonolo &bull; Selahle</span>
+      <span class="decor-corner top-right"></span>
+    </div>
+    <h1 class="futuristic-title" id="futuristic-title">
+      <span class="title-text-glow">WELCOME TO MY WORLD</span>
+    </h1>
+    <div class="title-hud-decor bottom-bar">
+      <span class="decor-line"></span>
+      <span class="hud-tag">TAP ON THE SATELLITE (E.G. TIKTOK) TO EXPLORE</span>
+      <span class="decor-line"></span>
+    </div>
+  </header>
+
+  <!-- Unified Planetary System Anchor (Organic cosmic space floating) -->
+  <div class="planetary-system" id="planetary-system">
+    <!-- Central Planet Stage (Exact Cartesian 0,0 Center) -->
+    <div class="planet-stage" id="planet-stage" title="Click and drag to rotate the planet">
+      <div class="atmosphere-halo"></div>
+      <div class="orbit-reticle"></div>
+      <canvas id="planet-canvas"></canvas>
+    </div>
+
+    <!-- 3D Orbiting Satellite Moons System -->
+    <div class="orbital-system" id="orbital-system" aria-label="Orbiting satellite profiles"></div>
   </div>
 
-  <!-- 3D Orbiting Satellite Moons System -->
-  <div class="orbital-system" id="orbital-system" aria-label="Orbiting satellite profiles"></div>
+  <!-- AI Model Cosmic Query Interface (Positioned just below planet & satellites) -->
+  <section class="ai-query-section" id="ai-query-section" aria-label="AI Model Profile Query">
+    <div class="query-glow-backdrop"></div>
+    <form class="query-input-wrapper" id="query-form" role="search">
+      <div class="query-icon-slot">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sparkle-icon">
+          <path d="M12 3l1.912 4.886a2 2 0 001.202 1.202L20 11l-4.886 1.912a2 2 0 00-1.202 1.202L12 19l-1.912-4.886a2 2 0 00-1.202-1.202L4 11l4.886-1.912a2 2 0 001.202-1.202L12 3z"/>
+        </svg>
+      </div>
+      <input 
+        type="text" 
+        id="query-input" 
+        class="query-input" 
+        placeholder="Ask anything about Molebogeng..." 
+        autocomplete="off"
+        aria-label="Query my AI profile model"
+      />
+      <button type="submit" class="query-submit-btn" id="query-submit-btn" aria-label="Send Query">
+        <span>Query AI</span>
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </form>
+    <p class="query-description">
+      Query anything about me, my tech stack, or my projects &mdash; the AI model will pop up with an instant answer.
+    </p>
+    <div class="query-suggestions" id="query-suggestions">
+      <button type="button" class="suggestion-chip" data-query="What is your core tech stack?">✦ Tech Stack</button>
+      <button type="button" class="suggestion-chip" data-query="Tell me about your background and experience">✦ Background</button>
+      <button type="button" class="suggestion-chip" data-query="What projects have you built recently?">✦ Key Projects</button>
+      <button type="button" class="suggestion-chip" data-query="How can I get in touch with you?">✦ Contact Info</button>
+    </div>
+    <!-- Tiny Copyright 2026 Cosmic Footer -->
+    <footer class="cosmic-footer" id="cosmic-footer">
+      <p class="footer-copyright">Copyright &copy; 2026 Molebogeng Lehlogonolo Selahle. All Rights Reserved.</p>
+    </footer>
+  </section>
 
   <!-- Cosmic Glassmorphism Profile Modal -->
   <div id="cosmic-modal" class="cosmic-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -57,6 +118,45 @@
     </div>
   </div>
 
+  <!-- AI Model Response Modal Window -->
+  <div id="ai-response-modal" class="cosmic-modal ai-modal" role="dialog" aria-modal="true" aria-labelledby="ai-modal-title">
+    <div class="modal-backdrop" id="ai-modal-backdrop"></div>
+    <div class="modal-dialog-window ai-dialog">
+      <div class="modal-hud-header">
+        <div class="modal-title-group">
+          <span class="system-tag">// NEURAL QUERY TERMINAL</span>
+          <div class="title-row">
+            <h2 id="ai-modal-title">AI Model Response</h2>
+            <span class="modal-badge ai-badge">Neural V1.0</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button id="ai-modal-close-btn" class="modal-close-btn" aria-label="Close AI modal">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-content-scroll" id="ai-modal-body">
+        <div class="ai-query-display">
+          <span class="prompt-label">USER QUERY:</span>
+          <p id="ai-modal-user-query" class="prompt-text"></p>
+        </div>
+        <div class="ai-response-display">
+          <div class="ai-status-indicator">
+            <span class="pulse-dot"></span>
+            <span class="status-text" id="ai-status-text">SYNTHESIZING MODEL RESPONSE...</span>
+          </div>
+          <div id="ai-modal-response-content" class="response-text">
+            <!-- Dynamically populated model response -->
+          </div>
+        </div>
+        <div class="ai-modal-footer">
+          <span class="ai-footer-note">// READY FOR BACKEND API ENDPOINT INTEGRATION</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Supernova Blast Toast Notification (Fires after 2-second dwell) -->
   <div id="supernova-alert" class="supernova-alert">
     ⚡ SUPERNOVA DETONATED // STELLAR REBIRTH INITIATED
@@ -66,6 +166,8 @@
   <script src="js/stars.js"></script>
   <script src="js/planet.js"></script>
   <script src="js/moons.js"></script>
+  <script src="js/title.js"></script>
+  <script src="js/query.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

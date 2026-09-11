@@ -27,7 +27,20 @@ class CosmicOrbitSystem {
     this.isPaused = false;
     this.activeMoon = null;
 
-    // Satellite Moon Definitions (Calm, majestic orbital speeds + TikTok moon)
+    // UNIFIED HARMONIC ORBITAL CONSTELLATION PARAMETERS
+    // All 7 satellites share a synchronized base speed and are phase-locked at exactly (2π / 7) ≈ 51.4° intervals.
+    // They can NEVER drift closer, catch up, or clash in orbit.
+    this.baseSpeed = 0.0026;             // Calm, majestic orbital cruising velocity
+    this.inclination = -0.24;            // 3D orbital tilt (~ -13.8°)
+    this.orbitRadiusXMultiplier = 1.82;  // Major axis multiplier relative to planet radius
+    this.orbitRadiusYMultiplier = 0.68;  // Minor axis multiplier for 3D perspective
+    this.globalPhase = 0.0;              // Master system orbital clock
+    this.currentSpeedMultiplier = 1.0;   // Interpolated system speed multiplier
+    this.targetSpeedMultiplier = 1.0;    // Target system speed (drops smoothly on hover)
+    this.hoveredMoon = null;             // Currently hovered satellite
+    this.minSeparationPx = 82;           // Active screen-space collision guard distance (px)
+
+    // Satellite Moon Definitions (Unique branding, icons, colors, descriptions)
     this.moons = [
       {
         id: 'linkedin',
@@ -37,12 +50,7 @@ class CosmicOrbitSystem {
         url: 'https://www.linkedin.com',
         description: 'Connect with me professionally, view endorsements, career history, and industry network.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 9.74V9.92H5.06v8.58h2.8z"/></svg>`,
-        orbitRadiusX: 1.55,  // Multiplier of planet radius
-        orbitRadiusY: 0.62,
-        inclination: -0.26,  // Tilt in radians (~15 deg)
-        speed: 0.0036,       // Reduced for calm, majestic orbit
-        phase: 0.0,          // Starting angle
-        size: 46             // Base diameter in px
+        size: 46
       },
       {
         id: 'github',
@@ -52,11 +60,6 @@ class CosmicOrbitSystem {
         url: 'https://github.com',
         description: 'Browse open-source contributions, repositories, algorithms, system architectures, and commits.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>`,
-        orbitRadiusX: 1.82,
-        orbitRadiusY: 0.74,
-        inclination: 0.35,
-        speed: 0.0032,
-        phase: 0.95,
         size: 46
       },
       {
@@ -67,11 +70,6 @@ class CosmicOrbitSystem {
         url: 'https://www.tiktok.com',
         description: 'Watch quick programming tips, developer humor, technology breakdowns, and coding shorts.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>`,
-        orbitRadiusX: 1.68,
-        orbitRadiusY: 0.68,
-        inclination: -0.38,
-        speed: 0.0034,
-        phase: 1.85,
         size: 44
       },
       {
@@ -82,11 +80,6 @@ class CosmicOrbitSystem {
         url: 'https://youtube.com',
         description: 'Watch video presentations, coding tutorials, live architecture walkthroughs, and developer tech talks.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg>`,
-        orbitRadiusX: 1.76,
-        orbitRadiusY: 0.72,
-        inclination: 0.44,
-        speed: 0.0033,
-        phase: 2.75,
         size: 44
       },
       {
@@ -97,11 +90,6 @@ class CosmicOrbitSystem {
         url: '#cv-preview',
         description: 'Comprehensive software engineering resume, certifications, tech stack proficiencies, and work history.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 12h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>`,
-        orbitRadiusX: 1.95,
-        orbitRadiusY: 0.82,
-        inclination: 0.18,
-        speed: 0.0028,
-        phase: 3.65,
         size: 46
       },
       {
@@ -112,11 +100,6 @@ class CosmicOrbitSystem {
         url: '#about-preview',
         description: 'Discover my background, engineering philosophy, passion for distributed systems, and cosmic web design.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"/></svg>`,
-        orbitRadiusX: 1.45,
-        orbitRadiusY: 0.58,
-        inclination: 0.52,
-        speed: 0.0039,
-        phase: 4.55,
         size: 44
       },
       {
@@ -127,11 +110,6 @@ class CosmicOrbitSystem {
         url: '#projects-preview',
         description: 'Explore live web applications, enterprise Spring Boot APIs, 3D WebGL interfaces, and microservices.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6zm2 0v2h12V6H6zm0 4v8h12v-8H6zm2 2h3v4H8v-4zm5 0h3v2h-3v-2zm0 3h3v1h-3v-1z"/></svg>`,
-        orbitRadiusX: 2.12,
-        orbitRadiusY: 0.88,
-        inclination: -0.15,
-        speed: 0.0025,
-        phase: 5.45,
         size: 48
       }
     ];
@@ -172,13 +150,19 @@ class CosmicOrbitSystem {
         <div class="moon-tooltip">// ${moon.title.toUpperCase()}</div>
       `;
 
-      // Event listeners
+      // Event listeners: hovering decelerates the entire constellation synchronously
       el.addEventListener('pointerenter', () => {
         el.classList.add('hovered');
+        this.hoveredMoon = moon;
+        this.targetSpeedMultiplier = 0.10; // Slows entire orbital system to near-stop for effortless selection
       });
 
       el.addEventListener('pointerleave', () => {
         el.classList.remove('hovered');
+        if (this.hoveredMoon === moon) {
+          this.hoveredMoon = null;
+          this.targetSpeedMultiplier = 1.0; // Smoothly resumes normal cruising speed
+        }
       });
 
       el.addEventListener('click', (e) => {
@@ -187,7 +171,7 @@ class CosmicOrbitSystem {
       });
 
       this.container.appendChild(el);
-      this.domElements.push({ moon, el, currentAngle: moon.phase });
+      this.domElements.push({ moon, el });
     });
   }
 
@@ -199,63 +183,105 @@ class CosmicOrbitSystem {
     return 130;
   }
 
+  /**
+   * Screen-Space Anti-Collision Guard:
+   * Enforces that no two satellite dish balls ever overlap or clash in projected 2D space.
+   */
+  enforceSafeSeparation(positions, minDistance) {
+    const len = positions.length;
+    for (let iter = 0; iter < 2; iter++) {
+      for (let i = 0; i < len; i++) {
+        for (let j = i + 1; j < len; j++) {
+          const p1 = positions[i];
+          const p2 = positions[j];
+          const dx = p2.x - p1.x;
+          const dy = p2.y - p1.y;
+          const distSq = dx * dx + dy * dy;
+          const minDistSq = minDistance * minDistance;
+
+          if (distSq < minDistSq && distSq > 0.0001) {
+            const dist = Math.sqrt(distSq);
+            const overlap = (minDistance - dist) * 0.5;
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            p1.x -= nx * overlap;
+            p1.y -= ny * overlap;
+            p2.x += nx * overlap;
+            p2.y += ny * overlap;
+          }
+        }
+      }
+    }
+  }
+
   updateOrbits() {
     if (!this.isPaused) {
       const planetR = this.getPlanetRadius();
 
-      this.domElements.forEach((item) => {
-        const { moon, el } = item;
+      // Smoothly interpolate speed multiplier for organic deceleration & acceleration
+      this.currentSpeedMultiplier += (this.targetSpeedMultiplier - this.currentSpeedMultiplier) * 0.08;
+      const deltaSpeed = this.baseSpeed * this.currentSpeedMultiplier;
+      this.globalPhase = (this.globalPhase + deltaSpeed) % (Math.PI * 2);
 
-        // Progress orbital angle
-        const isHovered = el.classList.contains('hovered');
-        const speed = isHovered ? moon.speed * 0.25 : moon.speed;
-        item.currentAngle = (item.currentAngle + speed) % (Math.PI * 2);
+      // Responsive orbit radii clamped so satellites never clip beyond viewport on mobile
+      const maxAllowedRx = window.innerWidth * 0.45;
+      const rx = Math.min(planetR * this.orbitRadiusXMultiplier, maxAllowedRx);
+      const ry = rx * (this.orbitRadiusYMultiplier / this.orbitRadiusXMultiplier);
 
-        const theta = item.currentAngle;
-        const rx = planetR * moon.orbitRadiusX;
-        const ry = planetR * moon.orbitRadiusY;
+      const cosInc = Math.cos(this.inclination);
+      const sinInc = Math.sin(this.inclination);
+      const totalMoons = this.domElements.length;
 
-        // Unrotated orbit coordinates (x: horizontal, z: depth towards/away from viewer)
+      // 1. Calculate projected 3D & 2D coordinates with phase-locked uniform constellation spacing
+      const positions = this.domElements.map((item, idx) => {
+        // Uniform phase separation: each satellite is permanently locked at (idx * 2π / N)
+        const theta = (this.globalPhase + (idx * Math.PI * 2) / totalMoons) % (Math.PI * 2);
+
         const xOrb = Math.cos(theta) * rx;
-        const zOrb = Math.sin(theta) * rx;
         const yOrb = Math.sin(theta) * ry;
+        const zOrb = Math.sin(theta) * rx;
 
         // Apply inclination tilt around Z-axis
-        const cosInc = Math.cos(moon.inclination);
-        const sinInc = Math.sin(moon.inclination);
+        let x = xOrb * cosInc - yOrb * sinInc;
+        let y = xOrb * sinInc + yOrb * cosInc;
+        const z = zOrb;
 
-        const x = xOrb * cosInc - yOrb * sinInc;
-        const y = xOrb * sinInc + yOrb * cosInc;
-        const z = zOrb; // z > 0: front of screen, z < 0: behind screen
+        return { item, x, y, z, rx };
+      });
 
-        // Distance from Cartesian center in screen plane
+      // 2. Active Screen-Space Anti-Collision Guard
+      // Enforces minimum separation distance under all responsive conditions
+      this.enforceSafeSeparation(positions, Math.min(this.minSeparationPx, rx * 0.44));
+
+      // 3. Render and apply depth sorting styles
+      positions.forEach((pos) => {
+        const { item, x, y, z, rx } = pos;
+        const { el } = item;
+        const isHovered = (this.hoveredMoon === item.moon);
         const distFromCenter = Math.sqrt(x * x + y * y);
 
         // TRUE 3D OCCLUSION & DEPTH SORTING
-        // Planet center is at (0, 0), radius is planetR
-        // Planet stage is at z-index: 10
         if (z < 0) {
           // MOON IS BEHIND THE PLANET
-          const isBehindPlanetDisc = distFromCenter < planetR * 0.96;
-          
-          el.style.zIndex = '5'; // Placed behind the planet stage (z-index: 10)
-          
-          // Perspective scaling and subtle dimming for depth
+          const isBehindPlanetDisc = distFromCenter < planetR * 0.95;
           const depthNorm = Math.abs(z) / rx;
-          const scale = Math.max(0.72, 1.0 - depthNorm * 0.25);
-          const opacity = isBehindPlanetDisc ? '0' : Math.max(0.45, 1.0 - depthNorm * 0.45).toFixed(2);
+          const scale = Math.max(0.72, 1.0 - depthNorm * 0.22);
+          const opacity = isBehindPlanetDisc ? '0' : Math.max(0.40, 1.0 - depthNorm * 0.45).toFixed(2);
 
+          el.style.zIndex = isHovered ? '50' : '5';
+          el.style.pointerEvents = isBehindPlanetDisc ? 'none' : 'auto';
           el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), 0) scale(${scale.toFixed(3)})`;
           el.style.opacity = opacity;
           el.classList.add('behind-planet');
           el.classList.remove('in-front');
         } else {
           // MOON IS IN FRONT OF THE PLANET
-          el.style.zIndex = '20'; // Placed in front of the planet stage (z-index: 10)
-          
           const depthNorm = z / rx;
-          const scale = 1.0 + depthNorm * 0.22;
+          const scale = 1.0 + depthNorm * 0.20;
 
+          el.style.zIndex = isHovered ? '50' : '20';
+          el.style.pointerEvents = 'auto';
           el.style.transform = `translate3d(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px), 0) scale(${scale.toFixed(3)})`;
           el.style.opacity = '1.0';
           el.classList.add('in-front');

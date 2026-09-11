@@ -5,7 +5,7 @@
    Palette: OLED Deep Black (#000000), Clear Glass White (#FFFFFF), Gold (#FFD700)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@400;600;700&family=Urbanist:wght@300;400;500;600;700&display=swap');
 
 :root {
   --bg-deep-black: #000000;
@@ -15,6 +15,7 @@
 
   --font-display: 'Orbitron', -apple-system, sans-serif;
   --font-body: 'Space Grotesk', -apple-system, sans-serif;
+  --font-title: 'Urbanist', 'Space Grotesk', -apple-system, sans-serif;
 
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -72,11 +73,297 @@ html, body {
   background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%);
 }
 
-/* 3D Planet Stage (Positioned at exact Cartesian 0,0 Center of Screen) */
-.planet-stage {
+/* ==========================================================================
+   FUTURISTIC ANIMATED TITLE // "WELCOME TO MY WORLD"
+   ========================================================================== */
+/* ==========================================================================
+   FUTURISTIC ANIMATED TITLE // "WELCOME TO MY WORLD"
+   ========================================================================== */
+.cosmic-title-container {
+  position: absolute;
+  top: clamp(1rem, 3.5vh, 2.8rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  padding: 0.4rem 1rem;
+  width: min(94vw, 760px);
+  max-width: 96vw;
+  text-align: center;
+  transition: transform 0.3s var(--ease-spring);
+}
+
+/* Ambient Backlight Glow */
+.title-backdrop-glow {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
+  width: 135%;
+  height: 170%;
+  background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.14) 0%, rgba(123, 97, 255, 0.05) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(22px);
+  animation: titleGlowBreath 6s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlowBreath {
+  0% { opacity: 0.45; transform: translate(-50%, -50%) scale(0.95); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+/* HUD Top Bar Decor */
+.title-hud-decor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  position: relative;
+}
+
+.title-hud-decor.top-bar {
+  margin-bottom: 0.25rem;
+  padding: 0 0.5rem;
+}
+
+.hud-status-indicator {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  background: #00F0FF;
+  box-shadow: 0 0 8px #00F0FF, 0 0 14px rgba(0, 240, 255, 0.8);
+  animation: hudBlink 2.2s ease-in-out infinite;
+}
+
+@keyframes hudBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.hud-sub-label {
+  font-family: var(--font-body);
+  font-size: clamp(0.52rem, 1.3vw, 0.68rem);
+  letter-spacing: clamp(0.12em, 0.3vw, 0.24em);
+  color: rgba(0, 240, 255, 0.85);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.55);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Corner Reticle Accents */
+.decor-corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(0, 240, 255, 0.6);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.decor-corner.top-left {
+  top: -3px;
+  left: -2px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.decor-corner.top-right {
+  top: -3px;
+  right: -2px;
+  border-width: 1.5px 1.5px 0 0;
+}
+
+/* Main Futuristic Heading - Elegant & Smooth on the Eye */
+.futuristic-title {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-title);
+  font-size: clamp(1.05rem, 4.4vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: clamp(0.10em, 0.35vw, 0.28em);
+  text-transform: uppercase;
+  line-height: 1.22;
+  white-space: nowrap;
+  max-width: 100%;
+  text-align: center;
+  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.45)) drop-shadow(0 0 22px rgba(192, 132, 252, 0.25));
+}
+
+/* Holographic Shimmering Text Glow - Gentle, silky starlight sheen with robust fallback */
+.title-text-glow {
+  display: inline-block;
+  color: #BAE6FD; /* Fallback: guarantees text is NEVER transparent or blank */
+  background: linear-gradient(
+    90deg,
+    #FFFFFF 0%,
+    #BAE6FD 20%,
+    #38BDF8 40%,
+    #FFFFFF 60%,
+    #C084FC 80%,
+    #BAE6FD 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holoGradientShift 7s linear infinite;
+  transition: transform 0.35s var(--ease-spring);
+  max-width: 100%;
+}
+
+@keyframes holoGradientShift {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.cosmic-title-container:hover .futuristic-title {
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.8)) drop-shadow(0 0 30px rgba(192, 132, 252, 0.5));
+}
+
+.cosmic-title-container:hover .title-text-glow {
+  transform: scale(1.02);
+}
+
+/* HUD Bottom Bar Decor */
+.title-hud-decor.bottom-bar {
+  margin-top: 0.25rem;
+}
+
+.decor-line {
+  flex: 1;
+  max-width: 50px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.6), transparent);
+}
+
+.hud-tag {
+  font-family: var(--font-body);
+  font-size: clamp(0.48rem, 1.0vw, 0.60rem);
+  font-weight: 500;
+  letter-spacing: clamp(0.12em, 0.28vw, 0.26em);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Dedicated Mobile Viewport Rules (Phones & Narrow Displays) */
+@media (max-width: 640px) {
+  .cosmic-title-container {
+    top: clamp(0.75rem, 2vh, 1.4rem);
+    width: 96vw;
+    padding: 0.3rem 0.4rem;
+  }
+
+  .futuristic-title {
+    font-size: clamp(0.92rem, 5.0vw, 1.35rem);
+    letter-spacing: clamp(0.08em, 1.6vw, 0.16em);
+    line-height: 1.25;
+  }
+
+  .title-hud-decor.top-bar {
+    gap: 0.35rem;
+    margin-bottom: 0.18rem;
+    padding: 0 0.3rem;
+  }
+
+  .hud-sub-label {
+    font-size: clamp(0.48rem, 2.2vw, 0.58rem);
+    letter-spacing: clamp(0.08em, 1.2vw, 0.16em);
+  }
+
+  .title-hud-decor.bottom-bar {
+    margin-top: 0.18rem;
+  }
+
+  .decor-line {
+    max-width: 22px;
+  }
+
+  .hud-tag {
+    font-size: clamp(0.44rem, 1.8vw, 0.52rem);
+    letter-spacing: clamp(0.08em, 1.2vw, 0.16em);
+  }
+}
+
+@media (max-width: 360px) {
+  .futuristic-title {
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-sub-label {
+    font-size: 0.46rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-tag {
+    font-size: 0.42rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .title-backdrop-glow,
+  .hud-status-indicator,
+  .title-text-glow {
+    animation: none;
+  }
+}
+
+/* Unified Celestial System Anchor (Organic cosmic space floating) */
+.planetary-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 15;
+  animation: cosmicSpaceDrift 36s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+@keyframes cosmicSpaceDrift {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  15% {
+    transform: translate(8px, -11px);
+  }
+  30% {
+    transform: translate(14px, 4px);
+  }
+  45% {
+    transform: translate(5px, 13px);
+  }
+  60% {
+    transform: translate(-9px, 8px);
+  }
+  75% {
+    transform: translate(-14px, -5px);
+  }
+  90% {
+    transform: translate(-6px, -12px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+/* 3D Planet Stage (Positioned at exact Cartesian center of celestial system) */
+.planet-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
   transform: translate(-50%, -50%);
   width: clamp(210px, 46vmin, 350px);
   height: clamp(210px, 46vmin, 350px);
@@ -85,6 +372,7 @@ html, body {
   justify-content: center;
   cursor: grab;
   z-index: 10;
+  pointer-events: auto;
   transition: transform 0.3s var(--ease-spring);
 }
 
@@ -160,6 +448,43 @@ html, body {
   transform: translateX(-50%) translateY(0);
 }
 
+.supernova-alert.black-hole-alert {
+  background: rgba(139, 92, 246, 0.35);
+  border-color: #C084FC;
+  box-shadow: 0 0 50px rgba(168, 85, 247, 0.75), 0 0 25px rgba(56, 189, 248, 0.6);
+  color: #FFFFFF;
+  text-shadow: 0 0 12px #C084FC;
+  animation: blackHoleAlertPulse 0.6s infinite alternate ease-in-out;
+}
+
+@keyframes blackHoleAlertPulse {
+  0% { transform: translateX(-50%) translateY(0) scale(1); filter: brightness(1); }
+  100% { transform: translateX(-50%) translateY(0) scale(1.04); filter: brightness(1.3); }
+}
+
+/* Screen rumble / gravitational waves during black hole vortex */
+body.black-hole-active {
+  overflow: hidden !important;
+  animation: cosmicSingularityRumble 0.08s infinite ease-in-out;
+}
+
+@keyframes cosmicSingularityRumble {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-3px, 2px); }
+  50% { transform: translate(2px, -3px); }
+  75% { transform: translate(-2px, -2px); }
+  100% { transform: translate(3px, 2px); }
+}
+
+/* Sucked into black hole class for DOM elements */
+.sucked-into-blackhole {
+  pointer-events: none !important;
+  transition: transform 3.0s cubic-bezier(0.55, 0.05, 0.85, 0.3), opacity 2.8s ease-in, filter 2.8s ease !important;
+  transform: translate(var(--vortex-dx, 0px), var(--vortex-dy, 0px)) scale(0.001) rotate(1440deg) !important;
+  opacity: 0 !important;
+  filter: blur(12px) brightness(3) hue-rotate(180deg) !important;
+}
+
 /* Animations */
 @keyframes rotateClockwise {
   from { transform: rotate(0deg); }
@@ -176,8 +501,8 @@ html, body {
    ========================================================================== */
 .orbital-system {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   width: 0;
   height: 0;
   pointer-events: none;
@@ -199,6 +524,18 @@ html, body {
   -webkit-user-select: none;
   will-change: transform, opacity;
   transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* Generous Invisible Click Hitbox (Effortless selection on mouse & touch) */
+.satellite-moon::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  right: -14px;
+  bottom: -14px;
+  border-radius: 50%;
+  pointer-events: auto;
 }
 
 .satellite-moon:focus-visible {
@@ -294,17 +631,22 @@ html, body {
 }
 
 /* Hover State */
+.satellite-moon.hovered {
+  z-index: 50 !important;
+}
+
 .satellite-moon.hovered .dish-ball {
-  transform: scale(1.18);
+  transform: scale(1.22);
   border-color: #FFFFFF;
   box-shadow: 
     inset -4px -4px 8px rgba(0, 0, 0, 0.8),
-    inset 2px 2px 6px rgba(255, 255, 255, 0.6),
-    0 0 24px var(--moon-accent, #FFFFFF);
+    inset 2px 2px 6px rgba(255, 255, 255, 0.8),
+    0 0 26px var(--moon-accent, #FFFFFF),
+    0 0 45px var(--moon-accent, rgba(255, 255, 255, 0.4));
 }
 
 .satellite-moon.hovered .dish-glow {
-  opacity: 0.8;
+  opacity: 0.95;
 }
 
 .satellite-moon.hovered .moon-tooltip {
@@ -798,4 +1140,380 @@ html, body {
   background: rgba(0, 229, 255, 0.1);
   border: 1px solid rgba(0, 229, 255, 0.3);
   color: #00E5FF;
+}
+
+/* ==========================================================================
+   AI MODEL QUERY SECTION (Positioned just below the planet & satellites)
+   ========================================================================== */
+.ai-query-section {
+  position: absolute;
+  bottom: clamp(1rem, 3.8vh, 2.6rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 580px);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Ambient Backlight for Query Dock */
+.query-glow-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 160%;
+  background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.12) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(20px);
+}
+
+/* Query Input Form Wrapper */
+.query-input-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: rgba(8, 13, 26, 0.78);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 9999px;
+  padding: 0.35rem 0.45rem 0.35rem 1rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.75),
+    0 0 20px rgba(56, 189, 248, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s var(--ease-spring);
+}
+
+.query-input-wrapper:focus-within {
+  border-color: #38BDF8;
+  box-shadow: 
+    0 8px 35px rgba(0, 0, 0, 0.85),
+    0 0 28px rgba(56, 189, 248, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Sparkle Icon */
+.query-icon-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38BDF8;
+  margin-right: 0.65rem;
+  filter: drop-shadow(0 0 6px #38BDF8);
+  flex-shrink: 0;
+}
+
+.sparkle-icon {
+  animation: sparkleSpin 8s linear infinite;
+}
+
+@keyframes sparkleSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Text Input Field */
+.query-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+  color: #FFFFFF;
+  letter-spacing: 0.02em;
+}
+
+.query-input::placeholder {
+  color: rgba(186, 230, 253, 0.45);
+}
+
+/* Submit Button */
+.query-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: linear-gradient(135deg, #0284C7 0%, #7C3AED 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  padding: 0.5rem 1.1rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(2, 132, 199, 0.4);
+  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease, filter 0.25s ease;
+  flex-shrink: 0;
+}
+
+.query-submit-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 22px rgba(124, 58, 237, 0.6);
+  filter: brightness(1.1);
+}
+
+.query-submit-btn:active {
+  transform: scale(0.96);
+}
+
+/* Helper Description */
+.query-description {
+  font-family: var(--font-body);
+  font-size: clamp(0.64rem, 1.1vw, 0.75rem);
+  color: rgba(186, 230, 253, 0.7);
+  text-align: center;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  max-width: 95%;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* Suggestion Quick-Chips */
+.query-suggestions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.suggestion-chip {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 9999px;
+  color: rgba(224, 242, 254, 0.85);
+  font-family: var(--font-body);
+  font-size: clamp(0.62rem, 1.0vw, 0.72rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.22rem 0.7rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.25s var(--ease-spring);
+}
+
+.suggestion-chip:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38BDF8;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+}
+
+/* Tiny Cosmic Copyright Footer */
+.cosmic-footer {
+  margin-top: 0.25rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.footer-copyright {
+  font-family: var(--font-body);
+  font-size: clamp(0.56rem, 0.85vw, 0.68rem);
+  color: rgba(186, 230, 253, 0.52);
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  transition: color 0.25s ease;
+}
+
+.footer-copyright:hover {
+  color: rgba(224, 242, 254, 0.85);
+}
+
+/* ==========================================================================
+   AI RESPONSE MODAL SPECIFICS
+   ========================================================================== */
+.ai-modal .ai-dialog {
+  max-width: 680px;
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), 0 0 35px rgba(56, 189, 248, 0.2);
+}
+
+.ai-badge {
+  background: rgba(56, 189, 248, 0.15) !important;
+  border-color: #38BDF8 !important;
+  color: #38BDF8 !important;
+}
+
+.ai-query-display {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 12px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.prompt-label {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: rgba(56, 189, 248, 0.8);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.prompt-text {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #FFFFFF;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.ai-response-display {
+  background: rgba(8, 12, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 1.25rem;
+  min-height: 150px;
+}
+
+.ai-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38BDF8;
+  box-shadow: 0 0 8px #38BDF8;
+  animation: hudBlink 1.5s infinite;
+}
+
+.status-text {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  color: #38BDF8;
+}
+
+.ai-response-body {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: rgba(240, 249, 255, 0.92);
+}
+
+.ai-para {
+  margin-bottom: 0.8rem;
+}
+
+.ai-bullet {
+  margin-left: 1.2rem;
+  margin-bottom: 0.35rem;
+  list-style-type: square;
+  color: rgba(186, 230, 253, 0.9);
+}
+
+.ai-modal-footer {
+  margin-top: 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: right;
+}
+
+.ai-footer-note {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Mobile Responsive Optimization for Query Section */
+@media (max-width: 600px) {
+  .ai-query-section {
+    bottom: clamp(0.6rem, 2vh, 1.2rem);
+    width: 94vw;
+    gap: 0.4rem;
+  }
+
+  .query-input-wrapper {
+    padding: 0.3rem 0.35rem 0.3rem 0.8rem;
+  }
+
+  .query-input {
+    font-size: 0.84rem;
+  }
+
+  .query-submit-btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.72rem;
+    gap: 0.3rem;
+  }
+
+  .query-description {
+    font-size: 0.65rem;
+    line-height: 1.25;
+  }
+
+  .query-suggestions {
+    gap: 0.3rem;
+  }
+
+  .suggestion-chip {
+    padding: 0.18rem 0.55rem;
+    font-size: 0.62rem;
+  }
+
+  .cosmic-footer {
+    margin-top: 0.15rem;
+  }
+
+  .footer-copyright {
+    font-size: 0.56rem;
+    letter-spacing: 0.03em;
+  }
+
+  @keyframes cosmicSpaceDrift {
+    0% {
+      transform: translate(0px, 0px);
+    }
+    15% {
+      transform: translate(5px, -7px);
+    }
+    30% {
+      transform: translate(9px, 3px);
+    }
+    45% {
+      transform: translate(3px, 9px);
+    }
+    60% {
+      transform: translate(-6px, 5px);
+    }
+    75% {
+      transform: translate(-9px, -3px);
+    }
+    90% {
+      transform: translate(-4px, -8px);
+    }
+    100% {
+      transform: translate(0px, 0px);
+    }
+  }
 }
