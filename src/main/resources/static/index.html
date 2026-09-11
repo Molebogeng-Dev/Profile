@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cosmic 3D Web Profile</title>
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Fullscreen Interactive Canvas: Starfield, Gravity & Supernova Engine -->
+  <canvas id="starfield-canvas"></canvas>
+
+  <!-- Deep Space Atmosphere Vignette -->
+  <div class="space-vignette"></div>
+
+  <!-- Central Planet Stage (Exact Cartesian 0,0 Center) -->
+  <div class="planet-stage" id="planet-stage" title="Click and drag to rotate the planet">
+    <div class="atmosphere-halo"></div>
+    <div class="orbit-reticle"></div>
+    <canvas id="planet-canvas"></canvas>
+  </div>
+
+  <!-- Supernova Blast Toast Notification (Fires after 2-second dwell) -->
+  <div id="supernova-alert" class="supernova-alert">
+    ⚡ SUPERNOVA DETONATED // STELLAR REBIRTH INITIATED
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/stars.js"></script>
+  <script src="js/planet.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
