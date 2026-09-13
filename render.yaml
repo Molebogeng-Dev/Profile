@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: molebogeng-profile
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 10000
+

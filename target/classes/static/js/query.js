@@ -137,54 +137,82 @@ class CosmicQueryTerminal {
   generateModelResponse(query) {
     const q = query.toLowerCase();
 
-    if (q.includes('tech') || q.includes('stack') || q.includes('language') || q.includes('framework')) {
-      return `Molebogeng's primary technology stack centers around high-performance full-stack and distributed cloud systems:
+    if (q.includes('tech') || q.includes('stack') || q.includes('language') || q.includes('skill') || q.includes('tool')) {
+      return `Molebogeng's technical skills and proficiencies:
 
-• Backend: Java 21, Spring Boot 3, Spring Security, Hibernate/JPA, RESTful Microservices
-• Frontend & Visuals: WebGL, CSS3 3D transforms, Canvas API, JavaScript (ES6+), React
-• Data & Persistence: PostgreSQL, BigQuery, Relational Database Modeling
-• Cloud & DevOps: Docker, Containerization, Git, CI/CD Pipeline Automation
+• Programming Languages: Python, Java, C, SQL
+• Operating Systems: Linux Mint (XFCE), Windows
+• Tools & Methodologies: Git, GitHub, Object-Oriented Programming (OOP)
+• Web & Graphics: Full-Stack Web Development, Spring Boot, WebGL 3D, CSS3 Transforms
+• Cloud Certifications in Progress: AWS Certified AI Practitioner, AWS Certified Data Engineering
 
-All architectures are developed with high standards of clean code, testability, and resilience.`;
+All projects emphasize clean architecture, robust system configuration, and continuous learning.`;
     }
 
-    if (q.includes('background') || q.includes('about') || q.includes('who') || q.includes('experience')) {
-      return `Molebogeng Lehlogonolo Selahle is a forward-thinking software engineer and system architect passionate about marrying resilient backend microservices with cutting-edge 3D interactive web experiences.
+    if (q.includes('background') || q.includes('about') || q.includes('who') || q.includes('education') || q.includes('school') || q.includes('wethinkcode')) {
+      return `Molebogeng Lehlogonolo Selahle is a resourceful and continuous-learning Junior Developer based in Johannesburg, South Africa.
 
-With a strong foundation in Spring Boot, distributed cloud backends, and creative WebGL development, Molebogeng focuses on building scalable digital platforms that push technological boundaries.`;
+• Education: NQF Level 6 Occupational Certificate in Software Engineering at WeThinkCode_ (Expected December 2026); National Senior Certificate from William Hills Secondary School (2016).
+• Technical Mindset: A self-starter with proven capability to independently troubleshoot systems, optimize lightweight developer workspaces (Linux Mint on Proline hardware), and build robust software.
+• Digital Content & Communication: Host & Producer of 'Import Podcast' (2026 – Present), conducting guest appearances including an interview with Rody Preddy.`;
     }
 
-    if (q.includes('project') || q.includes('built') || q.includes('app') || q.includes('work')) {
-      return `Key projects in Molebogeng's portfolio include:
+    if (q.includes('isgela') || q.includes('sgela') || q.includes('marking') || q.includes('attendance') || q.includes('vision') || q.includes('qwen')) {
+      return `iSgela is Molebogeng's flagship AI educational platform connecting African teachers, students, parents, and schools:
 
-1. Cosmic 3D Web Profile: A full 3D WebGL spherical planetary interface with real-time starfield gravity physics, collision-avoiding satellite orbits, and modular micro-modals.
-2. Enterprise Spring Boot Services: Resilient, scalable REST microservices engineered with clean architecture, robust security, and cloud scalability.
-3. Interactive Portfolio Applications: High-performance web tools and creative engineering experiments.
+• Scan & Mark AI Engine: Open-weight Qwen2.5-VL-72B-Instruct vision model marks papers against memorandums, explains why answers were wrong, and suggests remedial exercises (<$0.001 per paper economics).
+• Dual-Tier Attendance: Digital roll-call for primary learners (Grades 1–7) and single-frame facial recognition (face-api.js server-side 128-d matching, 0 stored photos) for secondary learners (Grades 8–12).
+• Three Connected Portals: Multi-tenant dashboards for Teachers, Students, and Parents scoped strictly by school boundaries (core.School).
+• Parent WhatsApp Notifications: Automated plain-language exam summaries synthesized by OpenRouter and sent via Twilio WhatsApp sandbox.
+• Transparent Progress Dashboard: Whole-school analytics flagging learners who need attention based on rule thresholds (<50% marks, <80% attendance, 2+ missed assignments) with 0% AI bias.
+• Tech Stack: Django 5, DRF, Supabase (Postgres & Storage), OpenRouter, Docker, Render, and GitHub Actions CI/CD.
 
-Click on the orbiting "Projects & Apps" satellite to inspect detailed interactive previews.`;
+Click the orbiting 'Projects & Apps' satellite to explore the full breakdown and watch the walkthrough demo video!`;
     }
 
-    if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('reach') || q.includes('connect')) {
-      return `You can connect with Molebogeng through several cosmic channels:
+    if (q.includes('project') || q.includes('built') || q.includes('app') || q.includes('koko') || q.includes('work')) {
+      return `Key software engineering initiatives in Molebogeng's portfolio:
 
-• LinkedIn: Click the orbiting blue LinkedIn dish ball to view professional endorsements.
-• GitHub: Explore open-source codebases and algorithms via the GitHub satellite.
-• CV Resume: View and download the software engineering resume via the CV satellite.
-• Direct: Drop a message or inquiry directly to start an exciting collaboration!`;
+1. iSgela (Main Flagship Project): AI-powered African educational platform uniting teachers, students, and parents with automated Qwen2.5-VL paper marking, facial recognition attendance, and WhatsApp alerts.
+2. Cosmic 3D Portfolio Website: Interactive 3D planetary web application featuring real-time starfield gravity physics, collision-avoiding satellite orbits, and an AI model query interface.
+3. Koko Web App: Full-stack web application currently in active development.
+4. Development Environment Optimization: Transitioned primary development environment to Linux Mint XFCE on Proline hardware with partition and OS tuning.
+5. Cloud Credentials: In active preparation for AWS AI Practitioner and AWS Data Engineering certifications.`;
+    }
+
+    if (q.includes('podcast') || q.includes('import') || q.includes('rody')) {
+      return `Molebogeng is the Host & Producer of 'Import Podcast' (2026 – Present):
+
+• Manages end-to-end production including episode planning, topic research, and guest coordination.
+• Featured interview conducted with industry guest Rody Preddy.
+• Develops strong communication, interviewing, and planning skills that translate to effective engineering collaboration and technical documentation.`;
+    }
+
+    if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('phone') || q.includes('reach') || q.includes('connect')) {
+      return `You can connect directly with Molebogeng Lehlogonolo Selahle:
+
+• Location: Johannesburg, South Africa
+• Phone: 062 858 4953
+• Email: business.molebogeng@gmail.com
+• LinkedIn: linkedin.com/in/molebogeng-selahle-755b30385
+• GitHub: github.com/Molebogeng-Dev
+• TikTok: @import_podcast
+• YouTube: @import_podcast
+
+You can also download the official CV PDF directly from the Developer CV or About Me satellite modal!`;
     }
 
     // Default intelligent response
     return `Thank you for your query about "${query}".
 
-Molebogeng Lehlogonolo Selahle is a Software Engineer specializing in Spring Boot 3, Java 21, WebGL 3D interactive graphics, and distributed systems.
+Molebogeng Lehlogonolo Selahle is a Junior Developer and Software Engineering candidate at WeThinkCode_ proficient in Python, Java, C, SQL, and Linux Mint XFCE.
 
-You can explore specific domains by querying:
+You can ask anything about:
 • "What is your tech stack?"
-• "Tell me about your background"
-• "What projects have you built?"
-• "How can I contact you?"
-
-(Note: This neural query terminal is ready for direct connection to your live AI/LLM backend service!)`;
+• "Tell me about your background and education"
+• "What projects are you working on?"
+• "Tell me about the Import Podcast"
+• "How can I contact or hire you?"`;
   }
 
   streamTextResponse(fullText) {

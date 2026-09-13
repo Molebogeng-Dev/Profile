@@ -1,10 +1,12 @@
 /**
- * INTERACTIVE 3D PLANET ENGINE WITH 4 INTEGRATED PHOTOS & CLEAR GLASS GLOW
- * - Seamlessly wraps 4 photos around the rotating 3D sphere:
+ * INTERACTIVE 3D PLANET ENGINE WITH 6 INTEGRATED PHOTOS & CLEAR GLASS GLOW
+ * - Seamlessly wraps 6 photos around the rotating 3D sphere:
  *   1. Professional suit portrait (profile.jpg)
  *   2. Brown jacket portrait (photo2.jpg)
  *   3. Whiteboard Java presentation (photo3.jpg)
  *   4. Team collaboration & mentoring (photo4.jpg)
+ *   5. Software engineer portrait at BBD (photo5.jpg)
+ *   6. Team & colleagues collaboration at BBD (photo6.jpg)
  * - Clear, clean lighting (NO blue tint, 100% natural photo fidelity)
  * - Transparent glass rim reflection defining spherical planet form
  * - Full responsive auto-resizing across all devices
@@ -23,11 +25,11 @@ class CosmicPlanet {
     }
 
     // Rotation & Physics
-    // Initial rotY of 45 degrees (PI/4) brings Photo 1 (Suit portrait) directly to the front
+    // Initial rotY of 30 degrees (PI/6) brings Photo 1 (Suit portrait) directly to the front
     this.rotX = 0;
-    this.rotY = Math.PI / 4;
+    this.rotY = Math.PI / 6;
     this.targetRotX = 0;
-    this.targetRotY = Math.PI / 4;
+    this.targetRotY = Math.PI / 6;
     this.autoRotateSpeed = 0.004; // Smooth continuous planetary spin
     this.autoRotate = true;
 
@@ -228,7 +230,9 @@ class CosmicPlanet {
       'assets/images/profile.jpg', // Photo 1: Suit portrait
       'assets/images/photo2.jpg',  // Photo 2: Brown jacket portrait
       'assets/images/photo3.jpg',  // Photo 3: Whiteboard Java presentation
-      'assets/images/photo4.jpg'   // Photo 4: Collaboration & teamwork
+      'assets/images/photo4.jpg',  // Photo 4: Collaboration & teamwork
+      'assets/images/photo5.jpg',  // Photo 5: Software engineer portrait at BBD
+      'assets/images/photo6.jpg'   // Photo 6: Team & colleagues collaboration at BBD
     ];
 
     const loadedImages = [];
@@ -266,14 +270,16 @@ class CosmicPlanet {
     const totalW = canvas.width;
     const totalH = canvas.height;
     const count = images.length;
-    const sectorW = totalW / count; // 512px per photo
+    const sectorW = totalW / count;
 
     // Stretch each photo to fill its entire sector and pole-to-pole height
     // 0 black borders, 100% full spherical coverage around the entire planet
     images.forEach((img, i) => {
       if (!img) return;
-      const x = i * sectorW;
-      ctx.drawImage(img, x, 0, sectorW, totalH);
+      const startX = Math.floor(i * sectorW);
+      const endX = i === count - 1 ? totalW : Math.floor((i + 1) * sectorW);
+      const w = endX - startX;
+      ctx.drawImage(img, startX, 0, w, totalH);
     });
 
     // Upload composite texture to WebGL
