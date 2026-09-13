@@ -189,8 +189,11 @@ Click the orbiting 'Projects & Apps' satellite to explore the full breakdown and
     }
 
     if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('phone') || q.includes('reach') || q.includes('connect')) {
+    if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('phone') || q.includes('reach') || q.includes('connect') || q.includes('gmail')) {
       return `You can connect directly with Molebogeng Lehlogonolo Selahle:
 
+• Email: business.molebogeng@gmail.com
+• Phone: 062 858 4953
 • Location: Johannesburg, South Africa
 • Phone: 062 858 4953
 • Email: business.molebogeng@gmail.com
@@ -200,6 +203,7 @@ Click the orbiting 'Projects & Apps' satellite to explore the full breakdown and
 • YouTube: @import_podcast
 
 You can also download the official CV PDF directly from the Developer CV or About Me satellite modal!`;
+★ Direct Email Satellite: Tap the red orbiting Gmail satellite around the Earth planet to compose an email directly in Gmail Web, launch your default email client, or send a transmission through the in-browser terminal!`;
     }
 
     // Default intelligent response

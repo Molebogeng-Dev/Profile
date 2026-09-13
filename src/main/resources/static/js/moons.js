@@ -29,6 +29,7 @@ class CosmicOrbitSystem {
 
     // UNIFIED HARMONIC ORBITAL CONSTELLATION PARAMETERS
     // All 7 satellites share a synchronized base speed and are phase-locked at exactly (2π / 7) ≈ 51.4° intervals.
+    // All 8 satellites share a synchronized base speed and are phase-locked at exactly (2π / 8) = 45° intervals.
     // They can NEVER drift closer, catch up, or clash in orbit.
     this.baseSpeed = 0.0026;             // Calm, majestic orbital cruising velocity
     this.inclination = -0.24;            // 3D orbital tilt (~ -13.8°)
@@ -81,6 +82,16 @@ class CosmicOrbitSystem {
         description: 'Stream full video episodes, coding tutorials, live architecture walkthroughs, and developer tech talks.',
         iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM10 15V9l5.2 3-5.2 3z"/></svg>`,
         size: 44
+      },
+      {
+        id: 'gmail',
+        title: 'Gmail',
+        subtitle: 'business.molebogeng@gmail.com',
+        accentColor: '#EA4335',
+        url: 'mailto:business.molebogeng@gmail.com',
+        description: 'Send an email directly to Molebogeng Lehlogonolo Selahle at business.molebogeng@gmail.com for opportunities, projects, or inquiries.',
+        iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>`,
+        size: 46
       },
       {
         id: 'cv',
@@ -335,16 +346,107 @@ class CosmicOrbitSystem {
     if (this.modalExternalLink) {
       this.modalExternalLink.href = moon.url;
       this.modalExternalLink.style.setProperty('--accent', moon.accentColor);
+      if (moon.id === 'gmail') {
+        this.modalExternalLink.title = 'Send Email via Mail App';
+        this.modalExternalLink.removeAttribute('target');
+      } else {
+        this.modalExternalLink.title = 'Launch External';
+        this.modalExternalLink.setAttribute('target', '_blank');
+      }
     }
 
     // Generate Modal Content
     if (this.modalBody) {
       this.modalBody.innerHTML = this.generateModalContent(moon);
+      this.attachDynamicModalEvents(moon);
     }
 
     // Show Modal with Spring Animation
     this.modal.classList.add('active');
     document.body.classList.add('modal-open');
+  }
+
+  attachDynamicModalEvents(moon) {
+    if (moon.id === 'gmail') {
+      const copyBtn = document.getElementById('gmail-copy-trigger');
+      const copyLabel = document.getElementById('gmail-copy-label');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText('business.molebogeng@gmail.com');
+            if (copyLabel) copyLabel.textContent = 'Copied!';
+            copyBtn.style.borderColor = '#10B981';
+            copyBtn.style.color = '#10B981';
+            setTimeout(() => {
+              if (copyLabel) copyLabel.textContent = 'Copy Email';
+              copyBtn.style.borderColor = '';
+              copyBtn.style.color = '';
+            }, 2500);
+          } catch (err) {
+            const val = document.getElementById('gmail-address-val');
+            if (val) {
+              const range = document.createRange();
+              range.selectNodeContents(val);
+              const sel = window.getSelection();
+              sel.removeAllRanges();
+              sel.addRange(range);
+            }
+          }
+        });
+      }
+
+      const form = document.getElementById('contact-direct-form');
+      const statusEl = document.getElementById('contact-form-status');
+      const sendBtn = document.getElementById('contact-send-btn');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('contact-sender-name')?.value.trim() || '';
+          const email = document.getElementById('contact-sender-email')?.value.trim() || '';
+          const subject = document.getElementById('contact-subject')?.value.trim() || '';
+          const message = document.getElementById('contact-message')?.value.trim() || '';
+
+          if (sendBtn) {
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = `<span>Transmitting...</span>`;
+          }
+          if (statusEl) {
+            statusEl.style.display = 'inline-block';
+            statusEl.style.color = '#00E5FF';
+            statusEl.textContent = 'Dispatching signal to server & preparing mail composer...';
+          }
+
+          try {
+            await fetch('/api/contact/send', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, email, subject, message })
+            }).catch(() => null);
+
+            if (statusEl) {
+              statusEl.style.color = '#10B981';
+              statusEl.textContent = '✓ Signal received! Opening email composer...';
+            }
+
+            const mailtoUrl = `mailto:business.molebogeng@gmail.com?subject=${encodeURIComponent(subject || 'Inquiry via Portfolio')}&body=${encodeURIComponent(`From: ${name} (${email})\n\n${message}`)}`;
+            window.location.href = mailtoUrl;
+
+            form.reset();
+          } catch (err) {
+            if (statusEl) {
+              statusEl.style.color = '#FE2C55';
+              statusEl.textContent = 'Signal sent. Opening local mail client...';
+            }
+            window.location.href = `mailto:business.molebogeng@gmail.com?subject=${encodeURIComponent(subject || 'Inquiry via Portfolio')}`;
+          } finally {
+            if (sendBtn) {
+              sendBtn.disabled = false;
+              sendBtn.innerHTML = `<span>Transmit Email</span><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>`;
+            }
+          }
+        });
+      }
+    }
   }
 
   closeModal() {
@@ -404,6 +506,8 @@ class CosmicOrbitSystem {
             <span class="embed-label">LIVE SYSTEM FEED // ${moon.id.toUpperCase()}</span>
             <a href="${moon.url}" target="_blank" rel="noopener noreferrer" class="embed-launch-btn">
               <span>Open in New Tab</span>
+            <a href="${moon.url}" ${moon.id === 'gmail' ? '' : 'target="_blank" rel="noopener noreferrer"'} class="embed-launch-btn">
+              <span>${moon.id === 'gmail' ? 'Open Mail App' : 'Open in New Tab'}</span>
               <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7z"/></svg>
             </a>
           </div>
@@ -441,6 +545,88 @@ class CosmicOrbitSystem {
   }
 
   generateInternalCard(moon) {
+    if (moon.id === 'gmail') {
+      return `
+        <div class="gmail-interactive-view">
+          <!-- Gmail Hero Header Card -->
+          <div class="gmail-header-card">
+            <div class="gmail-avatar-slot">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+            </div>
+            <div class="gmail-header-info">
+              <span class="gmail-status-tag">● DIRECT TRANSMISSION TERMINAL</span>
+              <h4>Molebogeng Lehlogonolo Selahle</h4>
+              <div class="gmail-copy-row">
+                <span class="gmail-address-pill" id="gmail-address-val">business.molebogeng@gmail.com</span>
+                <button type="button" class="gmail-copy-btn" id="gmail-copy-trigger" title="Copy email address to clipboard">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                  <span id="gmail-copy-label">Copy Email</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Cards (Web Compose + Native Mail) -->
+          <div class="gmail-actions-grid">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=business.molebogeng@gmail.com&su=Inquiry%20via%20Portfolio" target="_blank" rel="noopener noreferrer" class="gmail-launch-card gmail-web-card">
+              <div class="launch-icon-row">
+                <span class="launch-badge">GOOGLE GMAIL WEB</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#EA4335"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7z"/></svg>
+              </div>
+              <h5>Compose in Gmail Web</h5>
+              <p>Opens a pre-filled compose window in your browser's Gmail account.</p>
+              <span class="launch-cta">Launch Web Composer &rarr;</span>
+            </a>
+
+            <a href="mailto:business.molebogeng@gmail.com?subject=Inquiry%20via%20Portfolio" class="gmail-launch-card mailto-card">
+              <div class="launch-icon-row">
+                <span class="launch-badge">DEFAULT EMAIL CLIENT</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#00E5FF"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </div>
+              <h5>Launch Mail Client</h5>
+              <p>Triggers your device's default mail client (Thunderbird, Outlook, Apple Mail).</p>
+              <span class="launch-cta">Open Mail App &rarr;</span>
+            </a>
+          </div>
+
+          <!-- Direct In-Browser Transmission Terminal Form -->
+          <div class="gmail-form-card">
+            <div class="form-title-row">
+              <h6>// DIRECT MESSAGE TRANSMISSION</h6>
+              <span class="form-hint">Sends directly to business.molebogeng@gmail.com</span>
+            </div>
+            <form id="contact-direct-form" class="gmail-direct-form">
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="contact-sender-name">YOUR NAME / CALLSIGN</label>
+                  <input type="text" id="contact-sender-name" name="name" class="gmail-input" placeholder="e.g. Alex Ndlovu" required autocomplete="name" />
+                </div>
+                <div class="form-field">
+                  <label for="contact-sender-email">YOUR EMAIL ADDRESS</label>
+                  <input type="email" id="contact-sender-email" name="email" class="gmail-input" placeholder="e.g. alex@example.com" required autocomplete="email" />
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="contact-subject">SUBJECT</label>
+                <input type="text" id="contact-subject" name="subject" class="gmail-input" placeholder="Project Opportunity / Technical Inquiry" required />
+              </div>
+              <div class="form-field">
+                <label for="contact-message">TRANSMISSION MESSAGE</label>
+                <textarea id="contact-message" name="message" class="gmail-input textarea" placeholder="Write your message here..." required></textarea>
+              </div>
+              <div class="form-submit-row">
+                <button type="submit" class="gmail-send-btn" id="contact-send-btn">
+                  <span>Transmit Email</span>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+                <span class="contact-form-status" id="contact-form-status" style="display: none;"></span>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
     if (moon.id === 'cv') {
       return `
         <div class="cv-interactive-view">

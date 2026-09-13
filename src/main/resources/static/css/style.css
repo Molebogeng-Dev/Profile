@@ -1738,11 +1738,306 @@ body.black-hole-active {
 }
 
 /* ==========================================================================
+   COSMIC GMAIL SATELLITE & DISPATCH TERMINAL
+   ========================================================================== */
+.gmail-interactive-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 0.2rem;
+}
+
+.gmail-header-card {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.25rem 1.4rem;
+  background: linear-gradient(135deg, rgba(234, 67, 53, 0.14), rgba(15, 20, 35, 0.95));
+  border: 1.5px solid rgba(234, 67, 53, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(234, 67, 53, 0.15), inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.gmail-avatar-slot {
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: rgba(234, 67, 53, 0.2);
+  border: 1.5px solid #EA4335;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #EA4335;
+  box-shadow: 0 0 16px rgba(234, 67, 53, 0.4);
+  flex-shrink: 0;
+}
+
+.gmail-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.gmail-status-tag {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #EA4335;
+  letter-spacing: 0.12em;
+}
+
+.gmail-header-info h4 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.gmail-copy-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.gmail-address-pill {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.82rem;
+  color: #FFFFFF;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  user-select: all;
+}
+
+.gmail-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.75rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gmail-copy-btn:hover {
+  background: rgba(234, 67, 53, 0.25);
+  border-color: #EA4335;
+  color: #FFFFFF;
+}
+
+.gmail-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.gmail-launch-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gmail-launch-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(234, 67, 53, 0.6);
+  box-shadow: 0 0 20px rgba(234, 67, 53, 0.2);
+}
+
+.gmail-web-card {
+  border-left: 3px solid #EA4335;
+}
+
+.mailto-card {
+  border-left: 3px solid #00E5FF;
+}
+
+.launch-icon-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.launch-badge {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.gmail-launch-card h5 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.gmail-launch-card p {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.launch-cta {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #EA4335;
+  margin-top: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.mailto-card .launch-cta {
+  color: #00E5FF;
+}
+
+.gmail-form-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.form-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.form-title-row h6 {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: #EA4335;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.form-hint {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.gmail-direct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-field label {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.gmail-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(10, 15, 28, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gmail-input:focus {
+  border-color: #EA4335;
+  box-shadow: 0 0 12px rgba(234, 67, 53, 0.3);
+}
+
+.gmail-input.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-submit-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.3rem;
+}
+
+.gmail-send-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  background: #EA4335;
+  color: #FFFFFF;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(234, 67, 53, 0.4);
+  transition: all 0.2s ease;
+}
+
+.gmail-send-btn:hover {
+  background: #FF5A4D;
+  transform: translateY(-2px);
+  box-shadow: 0 0 26px rgba(234, 67, 53, 0.7);
+}
+
+.contact-form-status {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: #10B981;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
    AI MODEL QUERY SECTION (Positioned just below the planet & satellites)
    ========================================================================== */
 .ai-query-section {
   position: absolute;
-  bottom: clamp(1rem, 3.8vh, 2.6rem);
+  bottom: clamp(1rem, 3.8vh, 2rem);
   left: 50%;
   transform: translateX(-50%);
   width: min(92vw, 580px);
